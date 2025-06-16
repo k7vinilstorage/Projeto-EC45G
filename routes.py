@@ -6,6 +6,10 @@ def index():
     navn = "Word vini"
     return render_template("index.html", navn=navn)
 
+@app.route("/index.html")
+def index_html():
+    return render_template("index.html")
+
 @app.route("/outr.html")
 def outr():
     return render_template("outr.html")
