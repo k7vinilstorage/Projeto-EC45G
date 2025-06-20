@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Doações</title>
+
+    <link rel='shortcut icon' href="{{ url_for('static', filename='assets/LogoBF.png') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CadDoac.css') }}">
+    <script>
+        // Envia os dados para o localStorage
+        const doacoes = {{ doacoes|tojson }};
+        localStorage.setItem('doacoes', JSON.stringify(doacoes));
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+        <a href="{{ url_for('main') }}" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
+            Volar para o principal
+        </a>
+
+    </div>
+        <h1>Sistema de Cadastro de Doações</h1>
+        
+        <div class="content-wrapper">
+            <div class="form-container">
+                <h2>Cadastrar Nova Doação</h2>
+                <form id="doacaoForm" method="POST">
+                    <div class="form-group">
+                        <label for="doador">Doador:</label>
+                        <input type="text" id="doador" name="donorName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Marca">Marca:</label>
+                        <input type="text" id="marca" name="mark" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo">Tipo:</label>
+                        <select id="tipo" name="type" required>
+                            <option selected hidden>Selecione</option>
+                            <option value="Externo">Externo</option>
+                            <option value="Interno">Interno</option>
+                            <option value="Coletor mestrual">Coletor Menstrural</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantidade">Hipoalergênico</label>
+                        <input type="radio" id="Hipoalergenico" name="hypoallergenic">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fluxo">Fluxo:</label>
+                        <select id="fluxo" name="flow" required>
+                            <option selected hidden>Selecione...</option>
+                            <option value="Protetor (sem abas)">Protetor (sem abas)</option>
+                            <option value="Protetor (com abas)">Protetor (com abas)</option>
+                            <option value="Leve">Leve</option>
+                            <option value="Moderado">Moderado (Normal)</option>
+                            <option value="Intenso">Intenso (Grande/Super)</option>
+                            <option value="Muito intenso">Muito intenso (Noturno/Extra Grande)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="indicacao">Indicação:</label>
+                        <select id="indicacao" name="indication" required>
+                            <option selected hidden>Selecione...</option>
+                            <option value="Noturno">Noturno</option>
+                            <option value="Pos-parto">Pós-parto</option>
+                            <option value="Diario">Diário</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade (unidades):</label>
+                        <input type="number" id="quantidade" name="number" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Cadastrar Doação</button>
+                </form>
+            </div>
+            
+            <div class="table-container">
+                <h2>Histórico de Doações</h2>
+                <div class="total-container">
+                    <span>Total de itens doados:</span>
+                    <strong id="totalDoacoes">0</strong>
+                </div>
+                <div class="table-wrapper">
+                    <table id="historicoTable">
+                        <thead>
+                            <tr>
+                                <th>Doador</th>
+                                <th>Marca</th>
+                                <th>Tipo</th>
+                                <th>Hipoalergênico</th>
+                                <th>Fluxo</th>
+                                <th>Indicação</th>
+                                <th>Quantidade</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados serão inseridos aqui via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='CadDoac.js') }}"></script>
+</body>
+</html>

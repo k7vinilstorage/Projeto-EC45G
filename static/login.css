@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  background-color: #fff4f4;
+}
+
+#elementos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#nome{
+    padding-top: 5dvh;
+    font-family: 'Poppins', sans-serif;
+    color: #00221F;
+    font-size: 64px;
+    font-weight: 800;
+    text-align: center;
+}
+
+#logo{
+    width: 205px;
+    height: 203px;
+    margin-top: 10px;
+}
+
+#logo2{
+    margin-top: 50px;
+    width: 648px;
+    height: 129px;
+}
+
+#arealogin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#arealogin{
+    width: 550px;
+    height: 278px;
+    border-radius: 8px 8px 8px 8px;
+    background-color: #F4D8C8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+}
+.login{
+    background-color: transparent; 
+    margin-top: 25px;
+}
+
+.titulos{
+    background-color: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.areaTexto{
+    background-color: #fff4f4;
+    width: 450px;
+    height: 20px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    padding: 10px;
+    box-shadow: none;
+    outline: none;
+    border-color: transparent;
+}
+
+.areaTexto:focus{
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+#cadastrar-link p, a{
+    background-color:#F4D8C8;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.botaoEnviar{
+    background-color: #00897b;     
+    color: white;                   
+    padding: 10px;
+    margin-top: 30px;            
+    width: 490px;                    
+    border: none;                   
+    border-radius: 10px;            
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;           
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    outline: none;
+    border-color: transparent;
+}
+
+.botaoEnviar:focus{
+    background-color: #004e46;
+    cursor: pointer;
+}
+
+.bx{
+    background-color: #F4D8C8;
+    color: #e02049;
+}
+
+.info{
+    background-color: transparent;
+}

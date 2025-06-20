@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --white: #fff4f4;
+    --beige: #f4d8c8;
+    --black: #000000;
+    --light-bg: #f8f9fa;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    background-color: var(--white);
+}
+
+h1 {
+    text-align: center;
+    color: var(--black);
+    margin-bottom: 18px;
+    border-bottom: 1px solid #eee;
+    font-size: 3rem;
+}
+
+.chart-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.chart-card {
+    flex: 0 0 48%;
+    max-width: 48%;
+    background-color: var(--beige);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card h2 {
+    text-align: center;
+    color: var(--black);
+    margin-bottom: 15px;
+    font-size: 2rem;
+    padding: 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 80vh;
+    width: 100%;
+    padding: 0;
+}
+
+.button-1 {
+    padding: 10px 20px;
+    background-color: #db3e5d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button-1:hover {
+    background-color: #db3e5d;
+    color: white;
+}
+
+.button-2 {
+    padding: 10px 20px;
+    background-color: #db3e5d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button-2:hover {
+    background-color: #db3e5d;
+    color: white;
+}
+
+.button-3 {
+    padding: 10px 20px;
+    background-color: #db3e5d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button-3:hover {
+    background-color: #db3e5d;
+    color: white;
+}
+
+@media (max-width: 992px) {
+    .chart-row {
+        gap: 20px;
+    }
+    
+    .chart-card {
+        min-width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .chart-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .chart-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 576px) {
+    .chart-container {
+        height: 300px;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .chart-card {
+        padding: 15px;
+    }
+}
