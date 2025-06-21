@@ -20,7 +20,7 @@
     <div id="arealogin">
       <img id="logo"  src="{{ url_for('static', filename='assets/texto_logo.png')}}">
       <h1 id = header>Cadastro de Usuários</h1>
-      
+
       {% if error_message %}
         <div class="error-message">{{ error_message }}</div>
       {% endif %}
@@ -28,6 +28,7 @@
         <div class="login">
           <input
             name="name"
+            id = "nome"
             placeholder="Nome"
             type="text"
             maxlength="32"
@@ -39,6 +40,7 @@
         <div class="login">
           <input
             name="user"
+            id = "username"
             placeholder="Usuário"
             type="text"
             maxlength="32"
@@ -50,6 +52,7 @@
         <div class="login">
           <input
             name="passwd"
+            id = "passwd"
             placeholder="Senha"
             type="password"
             maxlength="32"
@@ -61,6 +64,7 @@
         <div class="login">
           <input
             name="passwd_"
+            id = "passwdCkeck"
             placeholder="Senha"
             type="password"
             maxlength="32"
@@ -80,7 +84,7 @@
         <button type="submit" class="botaoEnviar">Cadastrar</button>
       </form>
 
-      <a href="#" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
+      <a href="{{ url_for('main')}}" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
         Voltar
       </a>
     </div>
