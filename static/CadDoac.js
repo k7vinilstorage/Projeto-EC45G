@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             doador: document.getElementById('doador').value,
             marca: document.getElementById('marca').value,
             tipo: document.getElementById('tipo').value,
-            hipoalergenico: document.getElementById('Hipoalergenico').value === 'Sim',
+            hipoalergenico: document.getElementById('Hipoalergenico').value == 'sim',
             fluxo: document.getElementById('fluxo').value,
             indicacao: document.getElementById('indicacao').value,
             quantidade: parseInt(document.getElementById('quantidade').value),
@@ -41,24 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error(err);
         });
 
-        // Remove a doação antiga se estiver editando
-        if (form.dataset.editingId) {
-            let doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
-            doacoes = doacoes.filter(d => d.id !== parseInt(form.dataset.editingId));
-            localStorage.setItem('doacoes', JSON.stringify(doacoes));
-            delete form.dataset.editingId; // Remove o ID de edição
-        }
-
-        // Salva a doação
-        saveDoacao(dados);
-        
-        // Atualiza a tabela
-        addDoacaoToTable(dados);
-        
-        // Limpa o formulário
-        form.reset();
-
-        calcularTotal();
+        location.reload();
     });
 
     function dataFormatadaAtual() {
@@ -72,13 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const minuto = String(agora.getMinutes()).padStart(2, '0');
 
         return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
-    }
-
-    function saveDoacao(doacao) {
-        let doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
-        doacoes.push(doacao);
-        localStorage.setItem('doacoes', JSON.stringify(doacoes));
-        calcularTotal();
     }
     
     function loadDoacoes() {
@@ -101,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <td>${doacao.quantidade}</td>
             <td>${doacao.date}</td>
             <td>
-                <button class="btn-action btn-edit" onclick="editDoacao(${doacao.id})">Editar</button>
                 <button class="btn-action btn-delete" onclick="deleteDoacao(${doacao.id})">Excluir</button>
             </td>
         `;
@@ -113,14 +88,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Funções globais para os botões de ação
 function deleteDoacao(id) {
-    if (confirm('Tem certeza que deseja excluir esta doação?')) {
-        let doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
-        doacoes = doacoes.filter(doacao => doacao.id !== id);
-        localStorage.setItem('doacoes', JSON.stringify(doacoes));
-        
-        document.querySelector(`tr[data-id="${id}"]`).remove();
-        calcularTotal();
-    }
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Essa ação não pode ser desfeita!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+        fetch('/excluir', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(response => {
+            if (response.ok) {
+            Swal.fire('Excluído!', 'A doação foi removida.', 'success');
+
+            if (linha) {
+                linha.remove();
+            }
+            } else {
+            Swal.fire('Erro', 'Não foi possível excluir.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            Swal.fire('Erro', 'Ocorreu um erro ao tentar excluir.', 'error');
+        });
+        }
+    });
 }
 
 function editDoacao(id) {

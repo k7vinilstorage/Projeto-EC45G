@@ -166,4 +166,15 @@ def getDataGraphic():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-
+@app.route('/excluir', methods=['POST'])
+def excluir_item():
+    data = request.get_json()
+    id = data['id']
+    
+    cur = db_session.cursor()
+    cur.execute("DELETE FROM certificadora.input_sanitalpad WHERE doa_id = %s", (id,))
+    db_session.commit()
+    cur.close()
+    
+    
+    return jsonify({'status': 'ok'})
