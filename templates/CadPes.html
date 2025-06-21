@@ -20,6 +20,10 @@
     <div id="arealogin">
       <img id="logo"  src="{{ url_for('static', filename='assets/texto_logo.png')}}">
       <h1 id = header>Cadastro de Usuários</h1>
+      
+      {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+      {% endif %}
       <form class="info" method="POST" action="{{ url_for('register')}}" onsubmit="return verificaLogin()">
         <div class="login">
           <input
@@ -66,14 +70,11 @@
           <i class="bx bxs-lock-alt"></i>
         </div>
         <div class="login">
-          <input
-            name="perm"
-            placeholder="Permissão"
-            type="text"
-            maxlength="32"
-            class="areaTexto"
-            required
-          />
+          <select class="areaTexto2" name="perm" required>
+            <option value="" selected hidden >Permissão</option>
+            <option value="admin">Administrador</option>
+            <option value="user">Usuário</option>
+          </select>
           <i class="bx bx-alarm-exclamation"></i>
         </div>
         <button type="submit" class="botaoEnviar">Cadastrar</button>
