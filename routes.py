@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from config import db_session
 from collections import defaultdict
 from matplotlib import cm
-import matplotlib.colors as mcolors
 
 @app.route("/")
 @app.route("/login.html")
@@ -15,11 +14,12 @@ def index():
         password = request.form.get('password')
         
         cursor = db_session.cursor()
-        cursor.execute("SELECT user_username, user_password FROM certificadora.user WHERE user_username = %s", (username,))
+        cursor.execute("SELECT user_username, user_password, user_permision FROM certificadora.user WHERE user_username = %s", (username,))
         user = cursor.fetchone()
         
         if user and check_password_hash(user[1], password): 
             session['username'] = user[0] 
+            session['is_admin'] = user[2]
             return redirect(url_for('main'))
         else:
             error_message = "Usuário ou senha inválidos"  # Exemplo
@@ -29,6 +29,9 @@ def index():
 
 @app.route('/CadPes', methods=['GET', 'POST'])
 def register():
+    if 'username' not in session or not session.get('is_admin'):
+        return redirect(url_for('main'))  # ou um erro 403
+
     if request.method == 'POST':
         name = request.form['name']
         username = request.form['user']
@@ -39,7 +42,7 @@ def register():
             hashed_password = generate_password_hash(password)
             cur = db_session.cursor()
             cur.execute("INSERT INTO certificadora.user (user_username, user_password, user_name, user_active, user_permision) " \
-            "VALUES  (%s, %s,  %s, %s, %s )",(username, hashed_password, name, True, True))
+            "VALUES  (%s, %s,  %s, %s, %s )",(username, hashed_password, name, True, False))
             db_session.commit()
             cur.close()
             return redirect(url_for('main'))
@@ -59,8 +62,8 @@ def main():
 
 @app.route("/cadastroDoacao")
 def CadDoaca():
-    if 'username' not in session:
-        return redirect(url_for('index'))
+    if 'username' not in session or not session.get('is_admin'):
+        return redirect(url_for('main'))  # ou um erro 403
     try:
         cur = db_session.cursor()
         cur.execute("""

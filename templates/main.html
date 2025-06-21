@@ -13,19 +13,22 @@
 <body>
 
      <div class="button-container">
-        <a href="{{ url_for('register')}}" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
-            Cadastrar Membros
-        </a>
-        <a href="{{ url_for('CadDoaca') }}" class="redirec-button button-2" style="text-decoration: none; display: inline-block;">
-            Cadastrar Doações
-        </a>
-        <a href="#" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
-            Gerar Relatório
-        </a>
-        <a href="{{ url_for('logout') }}" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
-            Logout
-        </a>
-    </div>
+    {% if session.get('is_admin') %}
+    <a href="{{ url_for('register')}}" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
+        Cadastrar Membros
+    </a>
+    <a href="{{ url_for('CadDoaca') }}" class="redirec-button button-2" style="text-decoration: none; display: inline-block;">
+        Cadastrar Doações
+    </a>
+    {% endif %}
+    <a href="#" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
+        Gerar Relatório
+    </a>
+    <a href="{{ url_for('logout') }}" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
+        Logout
+    </a>
+</div>
+
 
     <div class="container">
         <h1>Doações recebidas</h1>
