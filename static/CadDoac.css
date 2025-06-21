@@ -86,11 +86,11 @@ textarea {
     background-color: var(--teal);
     color: white;
     border: none;
-    padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    height: 40px;
 }
 
 .btn-submit:hover {
@@ -184,4 +184,30 @@ td:nth-child(6) {
 
 .total-container strong {
     font-size: 1.2em;
+}
+
+.button-1 {
+    background-color: #db3e5d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 7px 5px;
+    transition: background-color 0.3s;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.button-1:hover {
+    background-color: #cb3b58;
+    color: white;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 325px;
 }
