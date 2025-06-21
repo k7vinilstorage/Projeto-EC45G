@@ -27,6 +27,25 @@ def index():
     else:
         return render_template('login.html', error_message=None)
 
+@app.route('/CadPes', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['user']
+        password = request.form['passwd']
+        password2 = request.form['passwd_']
+        perm = request.form['perm']
+        if(password == password2):
+            hashed_password = generate_password_hash(password)
+            cur = db_session.cursor()
+            cur.execute("INSERT INTO certificadora.user (user_username, user_password, user_name, user_active, user_permision) " \
+            "VALUES  (%s, %s,  %s, %s, %s )",(username, hashed_password, name, True, True))
+            db_session.commit()
+            cur.close()
+            return redirect(url_for('main'))
+    return render_template("CadPes.html")
+
+
 @app.route('/logout')
 def logout():
     session.clear() 

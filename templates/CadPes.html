@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Doações - Bons Fluídos</title>
+  <link rel='shortcut icon' href="{{ url_for('static', filename='assets/LogoBF.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CadPesStyle.css') }}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet"
+  />
+</head>
+script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="CadPes.js"></script>
+<body>
+  <div id="elementos">
+    <div id="arealogin">
+      <img id="logo"  src="{{ url_for('static', filename='assets/texto_logo.png')}}">
+      <h1 id = header>Cadastro de Usuários</h1>
+      <form class="info" method="POST" action="{{ url_for('register')}}" onsubmit="return verificaLogin()">
+        <div class="login">
+          <input
+            name="name"
+            placeholder="Nome"
+            type="text"
+            maxlength="32"
+            class="areaTexto"
+            required
+          />
+          <i class="bx bxs-bookmark-heart"></i>
+        </div>
+        <div class="login">
+          <input
+            name="user"
+            placeholder="Usuário"
+            type="text"
+            maxlength="32"
+            class="areaTexto"
+            required
+          />
+          <i class="bx bxs-user"></i>
+        </div>
+        <div class="login">
+          <input
+            name="passwd"
+            placeholder="Senha"
+            type="password"
+            maxlength="32"
+            class="areaTexto"
+            required
+          />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="login">
+          <input
+            name="passwd_"
+            placeholder="Senha"
+            type="password"
+            maxlength="32"
+            class="areaTexto"
+            required
+          />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="login">
+          <input
+            name="perm"
+            placeholder="Permissão"
+            type="text"
+            maxlength="32"
+            class="areaTexto"
+            required
+          />
+          <i class="bx bx-alarm-exclamation"></i>
+        </div>
+        <button type="submit" class="botaoEnviar">Cadastrar</button>
+      </form>
+
+      <a href="#" class="redirec-button button-1" style="text-decoration: none; display: inline-block;">
+        Voltar
+      </a>
+    </div>
+  </div>
+</body>
+</html>
