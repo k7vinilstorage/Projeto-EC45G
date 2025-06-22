@@ -4,22 +4,25 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from config import db_session
 from collections import defaultdict
 from matplotlib import cm
-import matplotlib.colors as mcolors
 
 @app.route("/")
 @app.route("/login.html")
 @app.route("/login", methods=['GET', 'POST'])
 def index():
+    if 'username' in session:
+        return redirect(url_for('main'))
+    
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         
         cursor = db_session.cursor()
-        cursor.execute("SELECT user_username, user_password FROM certificadora.user WHERE user_username = %s", (username,))
+        cursor.execute("SELECT user_username, user_password, user_permision FROM certificadora.user WHERE user_username = %s", (username,))
         user = cursor.fetchone()
         
-        if user and check_password_hash(user[1], password): 
+        if user and user[1] and check_password_hash(user[1], password): 
             session['username'] = user[0] 
+            session['is_admin'] = user[2]
             return redirect(url_for('main'))
         else:
             error_message = "Usuário ou senha inválidos"  # Exemplo
@@ -36,7 +39,9 @@ def logout():
 def main():
     if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('main.html')
+
+    sucesso = request.args.get('sucesso')  # Captura o parâmetro da URL
+    return render_template('main.html', sucesso=sucesso)
 
 @app.route("/cadastroDoacao")
 def CadDoaca():
@@ -178,3 +183,51 @@ def excluir_item():
     
     
     return jsonify({'status': 'ok'})
+
+
+@app.route('/CadPes', methods=['GET', 'POST'])
+def register():
+    if 'username' not in session or not session.get('is_admin'):
+        return redirect(url_for('main'))  # or return a 403
+
+    error_message = None
+
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['user']
+        password = request.form['passwd']
+        password2 = request.form['passwd_']
+        perm = request.form['perm']
+
+        # Check if username already exists
+        cur = db_session.cursor()
+        cur.execute("SELECT user_username FROM certificadora.user WHERE user_username = %s", (username,))
+        existing_user = cur.fetchone()
+
+        admin = False
+
+        if(perm == "admin"):
+            admin = True
+        
+        else:
+            admin = False
+
+        if existing_user:
+            error_message = "Nome de usuário já existe."
+        elif password != password2:
+            error_message = "As senhas não coincidem."
+        else:
+            hashed_password = generate_password_hash(password)
+            cur.execute("""
+                INSERT INTO certificadora.user (
+                    user_username, user_password, user_name, user_active, user_permision
+                ) VALUES (%s, %s, %s, %s, %s)
+            """, (username, hashed_password, name, True, admin))
+            db_session.commit()
+            cur.close()
+            return redirect(url_for('main',sucesso="Usuário cadastrado com sucesso!"))
+
+        cur.close()
+
+    return render_template("CadPes.html", error_message=error_message)
+

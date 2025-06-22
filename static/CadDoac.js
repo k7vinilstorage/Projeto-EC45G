@@ -30,10 +30,15 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                Swal.fire('Sucesso!', 'Doação registrada com sucesso.', 'success');
-                form.reset();
+                Swal.fire('Sucesso!', 'Doação registrada com sucesso.', 'success').then(() => {
+                    location.reload();
+                });
+                
+                
             } else {
-                Swal.fire('Erro!', data.error || 'Erro ao registrar.', 'error');
+                Swal.fire('Erro!', data.error || 'Erro ao registrar.', 'error').then(() => {
+                    location.reload();
+                });
             }
         })
         .catch(err => {
@@ -41,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error(err);
         });
 
-        location.reload();
+        
     });
 
     function dataFormatadaAtual() {
@@ -108,13 +113,16 @@ function deleteDoacao(id) {
         })
         .then(response => {
             if (response.ok) {
-            Swal.fire('Excluído!', 'A doação foi removida.', 'success');
-
-            if (linha) {
-                linha.remove();
-            }
+            Swal.fire('Excluído!', 'A doação foi removida.', 'success').then(() => {
+                // Remove a linha da tabela;
+                location.reload();
+            });
+            
             } else {
-            Swal.fire('Erro', 'Não foi possível excluir.', 'error');
+                Swal.fire('Erro', 'Não foi possível excluir.', 'error').then(() => {
+                    // Remove a linha da tabela;
+                    location.reload();
+                });
             }
         })
         .catch(error => {
