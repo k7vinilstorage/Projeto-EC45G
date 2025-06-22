@@ -45,8 +45,7 @@ def GeraRelat():
     cur = db_session.cursor()
     cur.execute("""
             SELECT 
-                doa_donorName, doa_mark, doa_type,
-                doa_hypoallergenic, doa_flow, doa_indication,
+                doa_donorName, doa_type, doa_flow, doa_indication,
                 doa_amount, doa_date
             FROM certificadora.input_sanitalpad
             ORDER BY doa_date DESC
@@ -61,15 +60,15 @@ def GeraRelat():
 
         def table_header(self):
             self.set_font("Arial", 'B', 10)
-            col_widths = [30, 30, 15, 13, 30, 18, 22, 28]
-            headers = ["Doador", "Marca", "Tipo", "Hipo", "Fluxo", "Indicação", "Quantidade", "Data"]
+            col_widths = [60, 15, 30, 18, 22, 28]
+            headers = ["Doador", "Tipo", "Fluxo", "Indicação", "Quantidade", "Data"]
             for width, title in zip(col_widths, headers):
                 self.cell(width, 8, title, border=1)
             self.ln()
 
         def table_row(self, row):
             self.set_font("Arial", '', 9)
-            col_widths = [30, 30, 15, 13, 30, 18, 22, 28]
+            col_widths = [60, 15, 30, 18, 22, 28]
             for width, item in zip(col_widths, row):
                 if isinstance(item, datetime):
                     item = item.strftime('%d/%m/%Y %H:%M')
