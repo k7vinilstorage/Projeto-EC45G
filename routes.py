@@ -4,6 +4,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from config import db_session
 from collections import defaultdict
 from matplotlib import cm
+from datetime import datetime
+from fpdf import FPDF
 
 @app.route("/")
 @app.route("/login.html")
@@ -35,6 +37,57 @@ def logout():
     session.clear() 
     return redirect(url_for('index'))        
 
+@app.route("/GeraRelat")
+def GeraRelat():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+
+    cur = db_session.cursor()
+    cur.execute("""
+            SELECT 
+                doa_donorName, doa_mark, doa_type,
+                doa_hypoallergenic, doa_flow, doa_indication,
+                doa_amount, doa_date
+            FROM certificadora.input_sanitalpad
+            ORDER BY doa_date DESC
+        """)
+    rows = cur.fetchall()
+
+    class PDF(FPDF):
+        def header(self):
+            self.set_font("Arial", 'B', 14)
+            self.cell(0, 10, "Relatório de Doações", ln=True, align="C")
+            self.ln(5)
+
+        def table_header(self):
+            self.set_font("Arial", 'B', 10)
+            col_widths = [30, 30, 15, 13, 30, 18, 22, 28]
+            headers = ["Doador", "Marca", "Tipo", "Hipo", "Fluxo", "Indicação", "Quantidade", "Data"]
+            for width, title in zip(col_widths, headers):
+                self.cell(width, 8, title, border=1)
+            self.ln()
+
+        def table_row(self, row):
+            self.set_font("Arial", '', 9)
+            col_widths = [30, 30, 15, 13, 30, 18, 22, 28]
+            for width, item in zip(col_widths, row):
+                if isinstance(item, datetime):
+                    item = item.strftime('%d/%m/%Y %H:%M')
+                self.cell(width, 8, str(item), border=1)
+            self.ln()
+
+    pdf = PDF()
+    pdf.add_page()
+    pdf.table_header()
+
+    for row in rows:
+        pdf.table_row(row)
+
+    pdf.output("donations_report.pdf")
+
+    cur.close()
+    return redirect(url_for('index'))
+
 @app.route("/main.html")
 def main():
     if 'username' not in session:
@@ -45,8 +98,8 @@ def main():
 
 @app.route("/cadastroDoacao")
 def CadDoaca():
-    if 'username' not in session:
-        return redirect(url_for('index'))
+    if 'username' not in session or not session.get('is_admin'):
+        return redirect(url_for('main'))
     try:
         cur = db_session.cursor()
         cur.execute("""
@@ -188,7 +241,7 @@ def excluir_item():
 @app.route('/CadPes', methods=['GET', 'POST'])
 def register():
     if 'username' not in session or not session.get('is_admin'):
-        return redirect(url_for('main'))  # or return a 403
+        return redirect(url_for('main'))
 
     error_message = None
 
