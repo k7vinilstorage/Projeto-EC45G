@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect, url_for, session, jsonify
+from flask import render_template, request, redirect, url_for, session, jsonify, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 from config import db_session
 from collections import defaultdict
@@ -83,10 +83,12 @@ def GeraRelat():
     for row in rows:
         pdf.table_row(row)
 
-    pdf.output("donations_report.pdf")
-
     cur.close()
-    return redirect(url_for('index'))
+    
+    response = make_response(pdf.output(dest='S').encode('latin1'))
+    response.headers.set('Content-Type', 'application/pdf')
+    response.headers.set('Content-Disposition', 'attachment', filename='relatorio.pdf')
+    return response
 
 @app.route("/main.html")
 def main():
