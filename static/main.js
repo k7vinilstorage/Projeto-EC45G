@@ -178,7 +178,7 @@ function validaEredireciona() {
             const dtInicial = new Date(dataInicial);
             const dtFinal = new Date(dataFinal);
             const hoje = new Date();
-            hoje.setHours(0,0,0,0);
+            hoje.setHours(0, 0, 0, 0);
 
             if (dtInicial >= dtFinal) {
                 Swal.showValidationMessage('A data inicial deve ser menor que a data final');
@@ -195,10 +195,9 @@ function validaEredireciona() {
     }).then((result) => {
         if (result.isConfirmed) {
             const { dataInicial, dataFinal } = result.value;
-            // Monta a URL da rota passando as datas como parâmetros GET
-            const url = `{{ url_for('GeraRelat') }}?data_inicial=${encodeURIComponent(dataInicial)}&data_final=${encodeURIComponent(dataFinal)}`;
-            // Redireciona para essa URL
+            const url = `${geraRelatUrl}?data_inicial=${encodeURIComponent(dataInicial)}&data_final=${encodeURIComponent(dataFinal)}`;
             window.location.href = url;
         }
     });
 }
+

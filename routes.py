@@ -42,15 +42,30 @@ def GeraRelat():
     if 'username' not in session:
         return redirect(url_for('index'))
 
+    # Obtém os parâmetros GET
+    data_inicial_str = request.args.get('data_inicial')
+    data_final_str = request.args.get('data_final')
+
+    # Converte as strings para objetos datetime
+    try:
+        data_inicial = datetime.strptime(data_inicial_str, '%Y-%m-%d')
+        data_final = datetime.strptime(data_final_str, '%Y-%m-%d')
+    except Exception as e:
+        return f"Erro ao interpretar as datas: {e}", 400
+
+    # Executa a query com filtro
     cur = db_session.cursor()
     cur.execute("""
-            SELECT 
-                doa_donorName, doa_type, doa_flow, doa_indication,
-                doa_amount, doa_date
-            FROM certificadora.input_sanitalpad
-            ORDER BY doa_date DESC
-        """)
+        SELECT 
+            doa_donorName, doa_type, doa_flow, doa_indication,
+            doa_amount, doa_date
+        FROM certificadora.input_sanitalpad
+        WHERE doa_date BETWEEN %s AND %s
+        ORDER BY doa_date DESC
+    """, (data_inicial, data_final))
+
     rows = cur.fetchall()
+
 
     class PDF(FPDF):
         def header(self):

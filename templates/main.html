@@ -27,7 +27,7 @@
         Cadastrar Doações
     </a>
     {% endif %}
-    <a href="javascript:void(0)" onclick="validaEredireciona()" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
+    <a href="javascript:void(0)" data-url="{{ url_for('GeraRelat') }}" onclick="validaEredireciona()" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
         Gerar Relatório
     </a>
     <a href="{{ url_for('logout') }}" class="redirec-button button-3" style="text-decoration: none; display: inline-block;">
@@ -55,7 +55,10 @@
         </div>
     </div>
 
-   
+    <script>
+        const geraRelatUrl = "{{ url_for('GeraRelat') }}";
+    </script>
+
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 
     {% if sucesso %}
