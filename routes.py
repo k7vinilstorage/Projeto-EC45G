@@ -30,54 +30,6 @@ def index():
     else:
         return render_template('login.html', error_message=None)
 
-@app.route('/CadPes', methods=['GET', 'POST'])
-def register():
-    if 'username' not in session or not session.get('is_admin'):
-        return redirect(url_for('main'))  # or return a 403
-
-    error_message = None
-
-    if request.method == 'POST':
-        name = request.form['name']
-        username = request.form['user']
-        password = request.form['passwd']
-        password2 = request.form['passwd_']
-        perm = request.form['perm']
-
-        # Check if username already exists
-        cur = db_session.cursor()
-        cur.execute("SELECT user_username FROM certificadora.user WHERE user_username = %s", (username,))
-        existing_user = cur.fetchone()
-
-        admin = False
-
-        if(perm == "admin"):
-            admin = True
-        
-        else:
-            admin = False
-
-        if existing_user:
-            error_message = "Nome de usuário já existe."
-        elif password != password2:
-            error_message = "As senhas não coincidem."
-        else:
-            hashed_password = generate_password_hash(password)
-            cur.execute("""
-                INSERT INTO certificadora.user (
-                    user_username, user_password, user_name, user_active, user_permision
-                ) VALUES (%s, %s, %s, %s, %s)
-            """, (username, hashed_password, name, True, admin))
-            db_session.commit()
-            cur.close()
-            return redirect(url_for('main'))
-
-        cur.close()
-
-    return render_template("CadPes.html", error_message=error_message)
-
-
-
 @app.route('/logout')
 def logout():
     session.clear() 
@@ -93,8 +45,8 @@ def main():
 
 @app.route("/cadastroDoacao")
 def CadDoaca():
-    if 'username' not in session or not session.get('is_admin'):
-        return redirect(url_for('main'))  # ou um erro 403
+    if 'username' not in session:
+        return redirect(url_for('index'))
     try:
         cur = db_session.cursor()
         cur.execute("""

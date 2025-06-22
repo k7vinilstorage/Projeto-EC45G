@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-/*
 
-=======
->>>>>>> 6c36bf017c7d13e743c661ff20d9061ec6207793
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("form.info");
 
@@ -12,11 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const senha = document.getElementById("passwd").value;
         const confirmarSenha = document.getElementById("passwdCkeck").value;
 
-<<<<<<< HEAD
         if (nome === "" || username === "" || senha === "" || confirmarSenha === "") {
-=======
-        if (nome === ""  username === ""  senha === "" || confirmarSenha === "") {
->>>>>>> 6c36bf017c7d13e743c661ff20d9061ec6207793
             event.preventDefault();
             mostrarAlerta("Preencha todos os campos!");
             return;
@@ -42,7 +35,7 @@ function mostrarAlerta(mensagem) {
     });
 }
 
-*/
+
 
 document.addEventListener('DOMContentLoaded', () => {
     if (errorMessage) {
