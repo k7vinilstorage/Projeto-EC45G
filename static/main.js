@@ -156,3 +156,49 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     .catch(error => console.error('Erro ao carregar dados do gráfico:', error));
 });
+
+
+function validaEredireciona() {
+    Swal.fire({
+        title: 'Insira as datas',
+        html:
+            '<input id="dataInicial" type="date" class="swal2-input" placeholder="Data Inicial">' +
+            '<input id="dataFinal" type="date" class="swal2-input" placeholder="Data Final">',
+        confirmButtonText: 'Gerar',
+        focusConfirm: false,
+        preConfirm: () => {
+            const dataInicial = document.getElementById('dataInicial').value;
+            const dataFinal = document.getElementById('dataFinal').value;
+
+            if (!dataInicial || !dataFinal) {
+                Swal.showValidationMessage('Preencha ambas as datas');
+                return false;
+            }
+
+            const dtInicial = new Date(dataInicial);
+            const dtFinal = new Date(dataFinal);
+            const hoje = new Date();
+            hoje.setHours(0,0,0,0);
+
+            if (dtInicial >= dtFinal) {
+                Swal.showValidationMessage('A data inicial deve ser menor que a data final');
+                return false;
+            }
+
+            if (dtFinal >= hoje) {
+                Swal.showValidationMessage('A data final deve ser menor que a data atual');
+                return false;
+            }
+
+            return { dataInicial, dataFinal };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const { dataInicial, dataFinal } = result.value;
+            // Monta a URL da rota passando as datas como parâmetros GET
+            const url = `{{ url_for('GeraRelat') }}?data_inicial=${encodeURIComponent(dataInicial)}&data_final=${encodeURIComponent(dataFinal)}`;
+            // Redireciona para essa URL
+            window.location.href = url;
+        }
+    });
+}
