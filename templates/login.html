@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bons Fluídos</title>
+
+    <link rel='shortcut icon' href="{{ url_for('static', filename='assets/LogoBF.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    
+    <script>
+      const errorMessage = {{ error_message|tojson }};
+    </script>
+    
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+    
+</head>
+<body>
+
+    
+
+    <div id = "elementos">
+        <img id="logo2"  src="{{ url_for('static', filename='assets/texto_logo.png') }}" alt="texto Logo">
+        <img id="logo"  src="{{ url_for('static', filename='assets/LogoBF.png') }}" alt="Logo">
+        <div id = "arealogin">
+            <form class = "info" method = "POST" action = "login">
+                <div class = "login">
+                    <input placeholder="Usuário" type="text" maxlength="32" class = "areaTexto" required name="username">
+                    <i class="bx bxs-user"></i>
+                </div>
+                <div class = "login">
+                    <input placeholder="Senha" type="password" maxlength="32" class = "areaTexto" required name="password">
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+
+                <button type="submit" class = "botaoEnviar">Enviar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

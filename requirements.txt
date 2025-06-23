@@ -1,0 +1,6 @@
+flask
+fpdf
+matplotlib
+psycopg2
+werkzeug
+
