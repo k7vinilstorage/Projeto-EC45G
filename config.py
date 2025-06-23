@@ -1,5 +1,5 @@
 import psycopg2
-# Database connection configuration
+
 
 db_session = psycopg2.connect(
     database="certificadora",

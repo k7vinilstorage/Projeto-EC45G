@@ -1,5 +1,3 @@
-#iscripit para gerar o primeiro usuário admin do site
-
 
 from config import db_session
 from werkzeug.security import generate_password_hash

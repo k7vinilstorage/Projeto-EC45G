@@ -6,7 +6,7 @@ CREATE SCHEMA IF NOT EXISTS certificadora;
 -- Trocando de schema para usar "certificadora"
 SET search_path TO certificadora;
 
--- Tabela input_sanitalPad (nome diferente de 'doacao', mas mantido do original)
+-- Tabela input_sanitalPad
 CREATE TABLE IF NOT EXISTS input_sanitalPad (
   doa_id SERIAL PRIMARY KEY,
   doa_donorName VARCHAR(100),
