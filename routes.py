@@ -19,7 +19,7 @@ def index():
         password = request.form.get('password')
         
         cursor = db_session.cursor()
-        cursor.execute("SELECT user_username, user_password, user_permision FROM certificadora.user WHERE user_username = %s", (username,))
+        cursor.execute("SELECT user_username, user_password, user_permision FROM certificadora.user WHERE user_username = %s AND  user_active = TRUE", (username,))
         user = cursor.fetchone()
         
         if user and user[1] and check_password_hash(user[1], password): 
@@ -42,18 +42,18 @@ def GeraRelat():
     if 'username' not in session:
         return redirect(url_for('index'))
 
-    # Obtém os parâmetros GET
+    
     data_inicial_str = request.args.get('data_inicial')
     data_final_str = request.args.get('data_final')
 
-    # Converte as strings para objetos datetime
+    
     try:
         data_inicial = datetime.strptime(data_inicial_str, '%Y-%m-%d')
         data_final = datetime.strptime(data_final_str, '%Y-%m-%d')
     except Exception as e:
         return f"Erro ao interpretar as datas: {e}", 400
 
-    # Executa a query com filtro
+    
     cur = db_session.cursor()
     cur.execute("""
         SELECT 
@@ -109,7 +109,7 @@ def main():
     if 'username' not in session:
         return redirect(url_for('index'))
 
-    sucesso = request.args.get('sucesso')  # Captura o parâmetro da URL
+    sucesso = request.args.get('sucesso')  
     return render_template('main.html', sucesso=sucesso)
 
 @app.route("/cadastroDoacao")
@@ -202,7 +202,7 @@ def getDataGraphic():
         anos = sorted(dados_formatados.keys())
         n_anos = len(anos)
 
-        # Gera cores dinâmicas
+        
         def generate_colors(n):
             cmap = cm.get_cmap('Paired', n)
             cores = []
@@ -260,7 +260,8 @@ def register():
         return redirect(url_for('main'))
 
     error_message = None
-
+    sucesso = None
+    
     if request.method == 'POST':
         name = request.form['name']
         username = request.form['user']
@@ -268,9 +269,9 @@ def register():
         password2 = request.form['passwd_']
         perm = request.form['perm']
 
-        # Check if username already exists
+        
         cur = db_session.cursor()
-        cur.execute("SELECT user_username FROM certificadora.user WHERE user_username = %s", (username,))
+        cur.execute("SELECT user_username FROM certificadora.user WHERE user_username = %s ", (username,))
         existing_user = cur.fetchone()
 
         admin = False
@@ -294,9 +295,37 @@ def register():
             """, (username, hashed_password, name, True, admin))
             db_session.commit()
             cur.close()
-            return redirect(url_for('main',sucesso="Usuário cadastrado com sucesso!"))
+
+            sucesso="Usuário cadastrado com sucesso!"
 
         cur.close()
 
-    return render_template("CadPes.html", error_message=error_message)
+    else:
+        sucesso = request.args.get('sucesso')
 
+    cur = db_session.cursor()
+    cur.execute("""
+        SELECT user_username, user_name, user_active, user_permision
+        FROM certificadora.user
+        WHERE user_active = TRUE 
+        AND user_username != %s
+        ORDER BY user_name ASC
+    """, (session['username'],))
+    users = cur.fetchall()  
+    cur.close()
+
+    
+
+    return render_template("CadPes.html", error_message=error_message, sucesso=sucesso,users=users)
+
+@app.route('/delete_user/<user_id>')
+def delete_user(user_id):
+    cur = db_session.cursor()
+    cur.execute("""
+        UPDATE certificadora.user
+        SET user_active = FALSE
+        WHERE user_username = %s
+    """, (user_id,))
+    db_session.commit()
+    cur.close()
+    return redirect(url_for('register', sucesso="Usuário excluído com sucesso!"))

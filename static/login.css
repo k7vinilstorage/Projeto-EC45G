@@ -4,7 +4,11 @@
 * {
   margin: 0;
   padding: 0;
-  background-color: #fff4f4;
+}
+
+
+body{
+    background-color: #fff4f4;
 }
 
 #elementos{

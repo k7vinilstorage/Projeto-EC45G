@@ -3,9 +3,9 @@ import psycopg2
 
 db_session = psycopg2.connect(
     database="certificadora",
-    user="postgres",
+    user="nome_usuario",
     host="localhost",
-    password="root",
+    password="senha123",
     port=5432
 )
 

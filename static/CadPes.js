@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function mostrarAlerta(mensagem) {
+function mostrarAlerta(mensagem, title = "Campo invalido", icon = "error") {
     Swal.fire({
-        title: "Campo invalido",
+        title: title,
         text: mensagem,
-        icon: "error",
+        icon: icon,
         confirmButtonText: "OK",
         confirmButtonColor: "#3085d6",
     });
