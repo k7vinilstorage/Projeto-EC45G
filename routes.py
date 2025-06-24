@@ -151,6 +151,10 @@ def CadDoaca():
 def registrar_doacao():
     data = request.get_json()
 
+    if(data['quantidade'] <= 0):
+        data['quantidade'] = data['quantidade'] * -1
+
+
     try:
         cur = db_session.cursor()
         cur.execute("""
